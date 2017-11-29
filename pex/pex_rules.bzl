@@ -208,7 +208,8 @@ def _pex_binary_impl(ctx):
   # form the arguments to pex builder
   arguments =  [] if ctx.attr.zip_safe else ["--not-zip-safe"]
   arguments += [] if ctx.attr.pex_use_wheels else ["--no-use-wheel"]
-  arguments += [] if ctx.attr.inherit_path else ["--inherit-path"]
+  if ctx.attr.inherit_path:
+    arguments += ["--inherit-path"]
   if ctx.attr.no_index:
     arguments += ["--no-index"]
   if ctx.attr.disable_cache:
@@ -358,7 +359,7 @@ pex_bin_attrs = _dmerge(pex_attrs, {
         mandatory = False,
     ),
     "inherit_path": attr.bool(
-        default = True,
+        default = False,
         mandatory = False,
     ),
 })
